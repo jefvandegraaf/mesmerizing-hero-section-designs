@@ -1,10 +1,10 @@
 # Mesmerizing Hero Section Designs
 
-**48 free animated hero backgrounds. Get all as an HTML file which you can copy, paste, and ship!**
+**48 free animated hero backgrounds. Get each one as an HTML file which you can copy, paste, and ship!**
 
-Browse them live on my website, pick your colo(u)rs, type your own headline andthen  copy the code: **[jefvandegraaf.com/resources/hero-designs/](https://jefvandegraaf.com/resources/hero-designs/)**
+Browse them live on my website, pick your colo(u)rs, type your own headline and then copy the code: **[jefvandegraaf.com/resources/hero-designs/](https://jefvandegraaf.com/resources/hero-designs/)**
 
-Best of all, my hero animation design stop for people who prefer reduced motion. That means better site experience, better PageSpeed scores, and better conversions (I hope)!
+Best of all, my hero animations stop for people who prefer reduced motion. That means better site experience, better PageSpeed scores, and better conversions (I hope)!
 
 ## How to use 'em
 
@@ -15,7 +15,7 @@ Best of all, my hero animation design stop for people who prefer reduced motion.
 
 Want to set the colours, light or dark, alignment, grain and speed with buttons instead? Do it on the [live gallery](https://jefvandegraaf.com/resources/hero-designs/) and copy the result.
 
-Gosh, its just that easy!
+Gosh, it’s just that easy!
 
 ## Let your AI do the work
 
@@ -52,7 +52,7 @@ Here's my homepage CSS. Make this hero match my fonts, spacing and buttons.
 
 I also offer 1001 Ultimate Claude Code Prompts here:  **[github.com/jefvandegraaf/1001-ultimate-claude-code-prompts](https://github.com/jefvandegraaf/1001-ultimate-claude-code-prompts)**
 
-## Where can use these incredible FREE hero section design ideas?
+## Where can you use these incredible FREE hero section design ideas?
 
 Anywhere that lets you add your own HTML:
 
