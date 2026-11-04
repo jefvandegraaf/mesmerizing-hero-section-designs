@@ -215,7 +215,7 @@ var concept = function (mock, layer) {
   var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && !t0) { play(); io.disconnect(); } }); }, { threshold: .45 });
   io.observe(mock);
   function tick(now, rn) {
-    if (!t0 || p >= 1 || rn - last < 16) return; last = rn;
+    if (!geo || !t0 || p >= 1 || rn - last < 16) return; last = rn;
     var q = Math.min(1, (now - t0) / 1800); p = q < .5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2;
     if (q >= 1) p = 1;
     draw(p);
