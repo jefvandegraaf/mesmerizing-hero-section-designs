@@ -1,31 +1,35 @@
 # Mesmerizing Hero Section Designs
 
-**48 free animated hero backgrounds. One HTML file each. Copy, paste, ship.**
+**48 free animated hero backgrounds. Get all as an HTML file which you can copy, paste, and ship!**
 
-Browse them all live, pick your colours, type your own headline and copy the code: **[jefvandegraaf.com/resources/hero-designs/](https://jefvandegraaf.com/resources/hero-designs/)**
+Browse them live on my website, pick your colo(u)rs, type your own headline andthen  copy the code: **[jefvandegraaf.com/resources/hero-designs/](https://jefvandegraaf.com/resources/hero-designs/)**
 
-No libraries, no build step, no frameworks. Every design is a single HTML file with plain CSS and a little JavaScript. The animation stops for people who prefer reduced motion.
+Best of all, my hero animation design stop for people who prefer reduced motion. That means better site experience, better PageSpeed scores, and better conversions (I hope)!
 
-## How to use one
+## How to use 'em
 
 1. Open any file in [`designs/`](designs/) in your browser to see it.
 2. Change the colours in `--hl-acc` and `--hl-acc2` (RGB values) and the strength in `--i`. The comment at the top of each file says where.
 3. Swap in your own headline, supporting line and buttons. They're plain HTML.
-4. Paste it into your page: the `<style>`, the `<section>` and the `<script>`. That's all a design is.
+4. Paste it into your page: the `<style>`, the `<section>` and the `<script>`. That's all it takes, baby!
 
 Want to set the colours, light or dark, alignment, grain and speed with buttons instead? Do it on the [live gallery](https://jefvandegraaf.com/resources/hero-designs/) and copy the result.
 
+Gosh, its just that easy!
+
 ## Let your AI do the work
 
-You don't have to touch the code. Hand the file to your AI and tell it what you want.
+Got an AI BFF? No problem!
 
-**Claude.** Paste a file into a chat and ask Claude to show it as an artifact. You get a live preview right there in the chat. Ask for changes ("make it my green", "slower", "put my headline in") and watch them happen, then copy the finished code.
+You don't have to touch a line of code. Hand this file to your AI and tell it what you want just like a CEO does with their team of experts!
+
+**Claude.** Paste a file into a chat and ask Claude to show it as an artifact. You get a live preview right there in the chat. Ask for changes ("make it my green", "slower", "put my headline in") and watch them happen, then copy the finished code. Wait, copy the finished code? Ha! Just ask your AI to SHIP the finished code!
+
+That's right folks: HUMANS ARE OBSOLETE NOW!
 
 **Claude Code, Cursor, Copilot and other coding agents.** Clone this repo, or drop one file into your project, and say something like "use design 13 as the hero on my homepage and match my fonts and colours". It will wire it in for you.
 
 **ChatGPT, Gemini and the rest.** Paste the file and ask. Same idea.
-
-Prompts that work well:
 
 ```text
 Here's a hero section. Change the accent colour to #0f766e, use my headline
@@ -46,7 +50,9 @@ Turn this into one snippet I can paste into a Webflow Embed element
 Here's my homepage CSS. Make this hero match my fonts, spacing and buttons.
 ```
 
-## Where you can use them
+I also offer 1001 Ultimate Claude Code Prompts here:  **[github.com/jefvandegraaf/1001-ultimate-claude-code-prompts](https://github.com/jefvandegraaf/1001-ultimate-claude-code-prompts)**
+
+## Where can use these incredible FREE hero section design ideas?
 
 Anywhere that lets you add your own HTML:
 
