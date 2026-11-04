@@ -1,0 +1,238 @@
+<!doctype html>
+<!--
+  Dither Breath hero
+  The pixel glow at the bottom slowly grows and shrinks like breathing, while a smaller glow does the opposite.
+
+  Hero designs by Jef van de Graaf, free to use · jefvandegraaf.com/resources/hero-designs/
+
+  How to use: open this file in a browser. Change the colours in --hl-acc and --hl-acc2 (RGB values)
+  and the strength in --i. The headline, supporting line and buttons are plain HTML.
+  Needs no libraries. The animation stops for people who prefer reduced motion.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dither Breath hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+body { margin: 0; }
+.hl {
+  --hl-bg: #fbfbfa; --hl-fg: #101010; --hl-muted: #545458; --hl-rgb: 16,16,16;
+  --hl-acc: 232,17,45; --hl-acc2: 255,221,0;
+  --hl-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --hl-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  --hl-jp: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --hl-cw: 1040px; --hl-pad: 48px;
+  --L: max(16px, calc((100% - var(--hl-cw)) / 2));
+  --i: 1;
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--hl-bg); color: var(--hl-fg);
+  font: 400 16px/1.6 var(--hl-sans); text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+.hl[data-theme="dark"] { --hl-bg: #050505; --hl-fg: #f6f6f4; --hl-muted: #a4a4a9; --hl-rgb: 255,255,255; color-scheme: dark; }
+.hl *, .hl *::before, .hl *::after { box-sizing: border-box; }
+.hl-layer { position: absolute; inset: 0; pointer-events: none; }
+.hl-bg { z-index: 0; opacity: min(1, calc(var(--o, .6) * var(--i))); }
+.hl-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hl-inner { position: relative; z-index: 2; padding-inline: calc(var(--L) + var(--hl-pad)); }
+.hl-nav { height: 64px; display: flex; align-items: center; gap: 28px; font-size: 14px; }
+.hl-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; margin-right: auto; white-space: nowrap; }
+.hl-logo { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(140deg, rgba(var(--hl-rgb),.5), rgba(var(--hl-rgb),.15)); }
+.hl-links { display: flex; gap: 26px; color: var(--hl-muted); }
+.hl-navbtn { font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(var(--hl-rgb),.25); white-space: nowrap; }
+.hl-hero { padding-block: 116px 120px; display: grid; gap: 22px; justify-items: start; }
+.hl .hl-tag { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 -6px; font: 500 15px/1.4 var(--hl-sans); color: var(--hl-muted); }
+.hl-tag svg { width: 16px; height: 16px; }
+.hl .hl-title { margin: 0; max-width: 760px; font: 500 clamp(40px, 5vw, 64px)/1.1 var(--hl-sans); letter-spacing: -.02em; color: var(--hl-fg); text-wrap: balance; }
+.hl .hl-lede { margin: 0; max-width: 48ch; font: 400 22px/1.5 var(--hl-sans); color: var(--hl-muted); text-wrap: pretty; }
+.hl-center .hl-hero { justify-items: center; text-align: center; }
+.hl-center .hl-actions { justify-content: center; }
+.hl-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+.hl .hl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 22px; border: 1px solid transparent; border-radius: 10px; font: 600 16px/1 var(--hl-sans); white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, opacity .2s ease; }
+.hl .hl-btn--primary { background: var(--hl-fg); color: var(--hl-bg); }
+.hl .hl-btn--primary:hover { opacity: .86; }
+.hl .hl-btn--secondary { background: var(--hl-bg); color: var(--hl-fg); border-color: rgba(var(--hl-rgb),.3); }
+.hl .hl-btn--secondary:hover { border-color: var(--hl-fg); }
+.hl-btn svg { width: 18px; height: 18px; transition: transform .2s ease; }
+.hl-btn:hover svg { transform: translateX(4px); }
+.hl .hl-btn:focus-visible { outline: 2px solid rgb(var(--hl-acc)); outline-offset: 3px; }
+@media (max-width: 760px) {
+  .hl .hl-title { font-size: min(40px, calc((100vw - 90px) / 8.3)); }
+  .hl .hl-lede { font-size: 16px; }
+  .hl-links { display: none; }
+}
+@media (max-width: 640px) {
+  .hl { --hl-pad: 20px; }
+  .hl-hero { padding-block: 96px 104px; }
+  .hl-actions { flex-direction: column; align-items: stretch; width: min(100%, 300px); }
+  .hl-btn--secondary { order: -1; }
+}
+.hl-bg--dbreath { --o: .8; }
+@media (prefers-reduced-motion: reduce) {
+  .hl-hz-pool, .hl-hz-core, .hl-caret, .hl-ring, .hl-bg--heat canvas, .hl-r-red .hl-rails .hl-n1, .hl-r-red .hl-rails .hl-b1, .hl-flicker .hl-grain, .hl-flicker .hl-hz-grain, .hl-tm .hl-cur, .hl-crt-roll, .hl-crt-glow, .hl-mq { animation: none; }
+  .hl-ring { opacity: .5; transform: translate(-50%,-50%) scale(6); }
+  .hl-ds-i span::after, .hl-pm path, .hl-pm .hl-pring, .hl-pm text, .hl-pm .hl-pfill, .hl-cg-band { transition: none; }
+}
+/* Centred text sits over the busiest part of most designs: a soft patch of background colour (a scrim) keeps it readable. */
+.hl-center .hl-hero { position: relative; }
+.hl-center .hl-hero::before { content: ""; position: absolute; inset: -48px -96px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--hl-bg) 92%, transparent) 55%, transparent); }
+/* On wider screens the copy sits on the frame's centre line, however many lines the headline takes. */
+@media (min-width: 761px) {
+  body > .hl { display: flex; flex-direction: column; }
+  body > .hl > .hl-inner { flex: 1; display: flex; flex-direction: column; }
+  body > .hl .hl-hero { flex: 1; align-content: center; padding-block: 40px 104px; } /* the 64px header above evens it out */
+}
+/* The supporting line breaks into two even lines on wider screens. */
+@media (min-width: 761px) { .hl .hl-lede { text-wrap: balance; } }
+/* The logo and menu sit a little wider than the headline column. */
+@media (min-width: 761px) { .hl-nav { margin-inline: calc(-1 * min(96px, max(16px, (100vw - var(--hl-cw)) / 2) + var(--hl-pad) - 24px)); } }
+/* Fills the window here. Remove this rule to let the hero take its own height. */
+body > .hl { min-height: 100vh; }
+</style>
+</head>
+<body>
+<section id="hero-dbreath" class="hl" data-theme="dark" style="--hl-acc: 232, 17, 45; --hl-acc2: 255, 221, 0; --i: 0.6;">
+<div class="hl-layer hl-bg hl-bg--dbreath" aria-hidden="true"></div>
+<div class="hl-inner">
+<div class="hl-nav"><span class="hl-brand"><span class="hl-logo"></span>Your Brand</span><span class="hl-links"><span>Product</span><span>Pricing</span><span>Blog</span><span>About</span></span><span class="hl-navbtn">Contact</span></div>
+<div class="hl-hero"><span class="hl-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Dither</span>
+<h1 class="hl-title">A glow that breathes</h1>
+<p class="hl-lede">The pixel glow at the bottom slowly grows and shrinks like breathing, while a smaller glow does the opposite.</p><div class="hl-actions">
+<a class="hl-btn hl-btn--primary" href="#">Primary CTA</a>
+<a class="hl-btn hl-btn--secondary" href="#">Secondary CTA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></div></div>
+</section>
+<script>
+(function () {
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var HL_LIVE = [];
+function hlMount(el, fn) {
+  var layer = el.querySelector('.hl-bg');
+  el.hlT = performance.now(); // this hero's own clock: runs at data-speed (Slow / Normal / Fast)
+  var api = fn(el, layer) || {};
+  api.el = el; api.visible = false;
+  HL_LIVE.push(api);
+  var w0 = -1, h0 = -1, rq = 0;
+  new ResizeObserver(function () {
+    var w = el.clientWidth, h = el.clientHeight;
+    if (w === w0 && h === h0) return;
+    w0 = w; h0 = h; cancelAnimationFrame(rq);
+    rq = requestAnimationFrame(function () { if (api.resize) api.resize(); });
+  }).observe(el);
+  // theme / accent changes redraw at once when on screen; off screen they wait until the section comes back
+  function redraw() { api.dirty = false; if (api.retheme) api.retheme(); else if (api.resize) api.resize(); }
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      api.visible = e.isIntersecting;
+      if (api.visible && api.dirty) redraw();
+      if (api.visible && api.start) api.start();
+      if (!api.visible && api.stop) api.stop();
+    });
+  }, { rootMargin: '100px' }).observe(el);
+  new MutationObserver(function () { if (api.visible) redraw(); else api.dirty = true; })
+    .observe(el, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (api.resize) api.resize(); });
+  if (!HL_LIVE.running) {
+    HL_LIVE.running = true;
+    requestAnimationFrame(function loop(now) {
+      for (var i = 0; i < HL_LIVE.length; i++) {
+        var a = HL_LIVE[i];
+        if (!a.visible || !a.tick) { a.rl = 0; continue; }
+        var sp = +(a.el.getAttribute('data-speed') || 1) || 1;
+        a.el.hlT += a.rl ? Math.min(250, now - a.rl) * sp : 0; a.rl = now;
+        a.tick(a.el.hlT, now);
+      }
+      requestAnimationFrame(loop);
+    });
+  }
+  return api;
+}
+
+function hlNow(mock) { return mock.hlT != null ? mock.hlT : performance.now(); }
+function cssVar(el, n) { return getComputedStyle(el).getPropertyValue(n).trim(); }
+function fgRGB(el) { return cssVar(el, '--hl-rgb') || '16,16,16'; }
+function accRGB(el) { return cssVar(el, '--hl-acc') || '232,17,45'; }
+function acc2RGB(el) { return cssVar(el, '--hl-acc2') || '255,221,0'; }
+function rel(el, mock) { var a = el.getBoundingClientRect(), b = mock.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height, r: a.right - b.left, b: a.bottom - b.top }; }
+function eraseZone(ctx, mock, amt, blur) {
+  // per-line boxes keep the cut-out close to the actual copy
+  ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.filter = 'blur(' + (blur || 30) + 'px)';
+  ctx.fillStyle = 'rgba(0,0,0,' + amt + ')';
+  mock.querySelectorAll('.hl-tag, .hl-title, .hl-lede, .hl-actions').forEach(function (el) { var r = rel(el, mock); if (r.w) ctx.fillRect(r.x - 24, r.y - 16, r.w + 48, r.h + 32); });
+  ctx.restore();
+}
+var B8 = [[0,32,8,40,2,34,10,42],[48,16,56,24,50,18,58,26],[12,44,4,36,14,46,6,38],[60,28,52,20,62,30,54,22],[3,35,11,43,1,33,9,41],[51,19,59,27,49,17,57,25],[15,47,7,39,13,45,5,37],[63,31,55,23,61,29,53,21]];
+function isDark(el) { return fgRGB(el).indexOf('255') === 0; }
+function rgbA(s, a) { var g = s.split(',').map(Number); return [g[0], g[1], g[2], a]; }
+function shade(c, f) { return [Math.round(c[0] * f), Math.round(c[1] * f), Math.round(c[2] * f), c[3]]; }
+function cellMask(mock, W, H, w, h, amt) {
+  var a = document.createElement('canvas'); a.width = W; a.height = H;
+  var actx = a.getContext('2d'); actx.fillStyle = '#000'; actx.fillRect(0, 0, W, H); eraseZone(actx, mock, amt);
+  var b = document.createElement('canvas'); b.width = w; b.height = h;
+  var bctx = b.getContext('2d'); bctx.drawImage(a, 0, 0, w, h);
+  var d = bctx.getImageData(0, 0, w, h).data, m = new Float32Array(w * h);
+  for (var k = 0; k < m.length; k++) { var a8 = d[k * 4 + 3] / 255; m[k] = a8 * a8; }
+  return m;
+}
+function ditherKit(mock, layer, px) {
+  var c = document.createElement('canvas'); c.style.imageRendering = 'pixelated'; layer.appendChild(c);
+  var kit = { px: px, ctx: c.getContext('2d') };
+  kit.size = function (amt) {
+    var W = Math.max(1, mock.clientWidth), H = Math.max(1, mock.clientHeight), w = Math.ceil(W / px), h = Math.ceil(H / px);
+    c.width = w; c.height = h; c.style.width = (w * px) + 'px'; c.style.height = (h * px) + 'px';
+    kit.W = W; kit.H = H; kit.w = w; kit.h = h; kit.img = kit.ctx.createImageData(w, h);
+    kit.mask = cellMask(mock, W, H, w, h, amt);
+    kit.thr = new Float32Array(w * h);
+    for (var j = 0; j < h; j++) for (var i = 0; i < w; i++) kit.thr[j * w + i] = (B8[j & 7][i & 7] + .5) / 64;
+    return kit;
+  };
+  kit.put = function () { kit.ctx.putImageData(kit.img, 0, 0); };
+  return kit;
+}
+function setPx(d, k, c) { k *= 4; d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = c[3]; }
+function greyCorner(kit) {
+  // the small grey corner from Dither Glow, top left
+  var W = kit.W, H = kit.H, P = kit.px, g = new Float32Array(kit.w * kit.h);
+  for (var j = 0; j < kit.h; j++) for (var i = 0; i < kit.w; i++) g[j * kit.w + i] = Math.max(0, 1 - Math.hypot(i * P / (W * .32), (j * P - 40) / (H * .55))) * .75;
+  return g;
+}
+
+var concept = function (mock, layer) {
+  var kit = ditherKit(mock, layer, 3), gxo, gxc, grey, ACC, CORE, GREY, last = 0;
+  function colours() { ACC = rgbA(accRGB(mock), 150); CORE = isDark(mock) ? rgbA(acc2RGB(mock), 170) : shade(rgbA(acc2RGB(mock), 215), .9); GREY = rgbA(fgRGB(mock), 50); }
+  function phase(now) { return .5 - .5 * Math.cos(now / 9000 * Math.PI * 2); }
+  function build() {
+    kit.size(1); colours();
+    var W = kit.W, P = kit.px;
+    gxo = new Float32Array(kit.w); gxc = new Float32Array(kit.w); grey = greyCorner(kit);
+    for (var i = 0; i < kit.w; i++) { var a = (i * P - W / 2) / (W * .62), b = (i * P - W / 2) / (W * .2); gxo[i] = a * a; gxc[i] = b * b; }
+    draw(reduce ? .5 : phase(hlNow(mock)));
+  }
+  function draw(s) {
+    var d = kit.img.data, m = kit.mask, T = kit.thr, w = kit.w, H = kit.H, P = kit.px;
+    var ry = H * (.48 + .32 * s), str = .9 + .24 * s, cry = H * (.24 - .08 * s), cstr = 1.05 - .35 * s;
+    for (var j = 0, k = 0; j < kit.h; j++) {
+      var dy = (j * P - H - 30) / ry, ty = dy * dy, cy = (j * P - H - 6) / cry, tc = cy * cy;
+      for (var i = 0; i < w; i++, k++) {
+        var mk = m[k], t = T[k];
+        var v = (1 - Math.sqrt(gxo[i] + ty)) * str, c = (1 - Math.sqrt(gxc[i] + tc)) * cstr;
+        if (c * mk > t + .12) setPx(d, k, CORE);
+        else if (v * mk > t) setPx(d, k, ACC);
+        else if (grey[k] * mk > t) setPx(d, k, GREY);
+        else d[k * 4 + 3] = 0;
+      }
+    }
+    kit.put();
+  }
+  function tick(now, rn) { if (rn - last < 40) return; last = rn; draw(phase(now)); }
+  return { resize: build, retheme: function () { if (!kit.img) return; colours(); draw(reduce ? .5 : phase(hlNow(mock))); }, tick: reduce ? null : tick };
+};
+var api = hlMount(document.getElementById('hero-dbreath'), concept);
+})();
+</script>
+</body>
+</html>

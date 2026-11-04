@@ -1,0 +1,222 @@
+<!doctype html>
+<!--
+  ASCII Fire hero
+  Keyboard characters flicker and rise like flames from the bottom of the section, hottest and brightest at the base.
+
+  Hero designs by Jef van de Graaf, free to use · jefvandegraaf.com/resources/hero-designs/
+
+  How to use: open this file in a browser. Change the colours in --hl-acc and --hl-acc2 (RGB values)
+  and the strength in --i. The headline, supporting line and buttons are plain HTML.
+  Needs no libraries. The animation stops for people who prefer reduced motion.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASCII Fire hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+body { margin: 0; }
+.hl {
+  --hl-bg: #fbfbfa; --hl-fg: #101010; --hl-muted: #545458; --hl-rgb: 16,16,16;
+  --hl-acc: 232,17,45; --hl-acc2: 255,221,0;
+  --hl-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --hl-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  --hl-jp: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --hl-cw: 1040px; --hl-pad: 48px;
+  --L: max(16px, calc((100% - var(--hl-cw)) / 2));
+  --i: 1;
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--hl-bg); color: var(--hl-fg);
+  font: 400 16px/1.6 var(--hl-sans); text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+.hl[data-theme="dark"] { --hl-bg: #050505; --hl-fg: #f6f6f4; --hl-muted: #a4a4a9; --hl-rgb: 255,255,255; color-scheme: dark; }
+.hl *, .hl *::before, .hl *::after { box-sizing: border-box; }
+.hl-layer { position: absolute; inset: 0; pointer-events: none; }
+.hl-bg { z-index: 0; opacity: min(1, calc(var(--o, .6) * var(--i))); }
+.hl-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hl-inner { position: relative; z-index: 2; padding-inline: calc(var(--L) + var(--hl-pad)); }
+.hl-nav { height: 64px; display: flex; align-items: center; gap: 28px; font-size: 14px; }
+.hl-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; margin-right: auto; white-space: nowrap; }
+.hl-logo { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(140deg, rgba(var(--hl-rgb),.5), rgba(var(--hl-rgb),.15)); }
+.hl-links { display: flex; gap: 26px; color: var(--hl-muted); }
+.hl-navbtn { font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(var(--hl-rgb),.25); white-space: nowrap; }
+.hl-hero { padding-block: 116px 120px; display: grid; gap: 22px; justify-items: start; }
+.hl .hl-tag { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 -6px; font: 500 15px/1.4 var(--hl-sans); color: var(--hl-muted); }
+.hl-tag svg { width: 16px; height: 16px; }
+.hl .hl-title { margin: 0; max-width: 760px; font: 500 clamp(40px, 5vw, 64px)/1.1 var(--hl-sans); letter-spacing: -.02em; color: var(--hl-fg); text-wrap: balance; }
+.hl .hl-lede { margin: 0; max-width: 48ch; font: 400 22px/1.5 var(--hl-sans); color: var(--hl-muted); text-wrap: pretty; }
+.hl-center .hl-hero { justify-items: center; text-align: center; }
+.hl-center .hl-actions { justify-content: center; }
+.hl-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+.hl .hl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 22px; border: 1px solid transparent; border-radius: 10px; font: 600 16px/1 var(--hl-sans); white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, opacity .2s ease; }
+.hl .hl-btn--primary { background: var(--hl-fg); color: var(--hl-bg); }
+.hl .hl-btn--primary:hover { opacity: .86; }
+.hl .hl-btn--secondary { background: var(--hl-bg); color: var(--hl-fg); border-color: rgba(var(--hl-rgb),.3); }
+.hl .hl-btn--secondary:hover { border-color: var(--hl-fg); }
+.hl-btn svg { width: 18px; height: 18px; transition: transform .2s ease; }
+.hl-btn:hover svg { transform: translateX(4px); }
+.hl .hl-btn:focus-visible { outline: 2px solid rgb(var(--hl-acc)); outline-offset: 3px; }
+@media (max-width: 760px) {
+  .hl .hl-title { font-size: min(40px, calc((100vw - 90px) / 8.3)); }
+  .hl .hl-lede { font-size: 16px; }
+  .hl-links { display: none; }
+}
+@media (max-width: 640px) {
+  .hl { --hl-pad: 20px; }
+  .hl-hero { padding-block: 96px 104px; }
+  .hl-actions { flex-direction: column; align-items: stretch; width: min(100%, 300px); }
+  .hl-btn--secondary { order: -1; }
+}
+.hl-bg--asciifire { --o: .85; }
+@media (prefers-reduced-motion: reduce) {
+  .hl-hz-pool, .hl-hz-core, .hl-caret, .hl-ring, .hl-bg--heat canvas, .hl-r-red .hl-rails .hl-n1, .hl-r-red .hl-rails .hl-b1, .hl-flicker .hl-grain, .hl-flicker .hl-hz-grain, .hl-tm .hl-cur, .hl-crt-roll, .hl-crt-glow, .hl-mq { animation: none; }
+  .hl-ring { opacity: .5; transform: translate(-50%,-50%) scale(6); }
+  .hl-ds-i span::after, .hl-pm path, .hl-pm .hl-pring, .hl-pm text, .hl-pm .hl-pfill, .hl-cg-band { transition: none; }
+}
+/* Centred text sits over the busiest part of most designs: a soft patch of background colour (a scrim) keeps it readable. */
+.hl-center .hl-hero { position: relative; }
+.hl-center .hl-hero::before { content: ""; position: absolute; inset: -48px -96px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--hl-bg) 92%, transparent) 55%, transparent); }
+/* On wider screens the copy sits on the frame's centre line, however many lines the headline takes. */
+@media (min-width: 761px) {
+  body > .hl { display: flex; flex-direction: column; }
+  body > .hl > .hl-inner { flex: 1; display: flex; flex-direction: column; }
+  body > .hl .hl-hero { flex: 1; align-content: center; padding-block: 40px 104px; } /* the 64px header above evens it out */
+}
+/* The supporting line breaks into two even lines on wider screens. */
+@media (min-width: 761px) { .hl .hl-lede { text-wrap: balance; } }
+/* The logo and menu sit a little wider than the headline column. */
+@media (min-width: 761px) { .hl-nav { margin-inline: calc(-1 * min(96px, max(16px, (100vw - var(--hl-cw)) / 2) + var(--hl-pad) - 24px)); } }
+/* Fills the window here. Remove this rule to let the hero take its own height. */
+body > .hl { min-height: 100vh; }
+</style>
+</head>
+<body>
+<section id="hero-asciifire" class="hl" data-theme="dark" style="--hl-acc: 232, 17, 45; --hl-acc2: 255, 221, 0; --i: 0.6;">
+<div class="hl-layer hl-bg hl-bg--asciifire" aria-hidden="true"></div>
+<div class="hl-inner">
+<div class="hl-nav"><span class="hl-brand"><span class="hl-logo"></span>Your Brand</span><span class="hl-links"><span>Product</span><span>Pricing</span><span>Blog</span><span>About</span></span><span class="hl-navbtn">Contact</span></div>
+<div class="hl-hero"><span class="hl-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>ASCII</span>
+<h1 class="hl-title">A fire made of characters</h1>
+<p class="hl-lede">Keyboard characters flicker and rise like flames from the bottom of the section, hottest and brightest at the base.</p><div class="hl-actions">
+<a class="hl-btn hl-btn--primary" href="#">Primary CTA</a>
+<a class="hl-btn hl-btn--secondary" href="#">Secondary CTA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></div></div>
+</section>
+<script>
+(function () {
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var HL_LIVE = [];
+function hlMount(el, fn) {
+  var layer = el.querySelector('.hl-bg');
+  el.hlT = performance.now(); // this hero's own clock: runs at data-speed (Slow / Normal / Fast)
+  var api = fn(el, layer) || {};
+  api.el = el; api.visible = false;
+  HL_LIVE.push(api);
+  var w0 = -1, h0 = -1, rq = 0;
+  new ResizeObserver(function () {
+    var w = el.clientWidth, h = el.clientHeight;
+    if (w === w0 && h === h0) return;
+    w0 = w; h0 = h; cancelAnimationFrame(rq);
+    rq = requestAnimationFrame(function () { if (api.resize) api.resize(); });
+  }).observe(el);
+  // theme / accent changes redraw at once when on screen; off screen they wait until the section comes back
+  function redraw() { api.dirty = false; if (api.retheme) api.retheme(); else if (api.resize) api.resize(); }
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      api.visible = e.isIntersecting;
+      if (api.visible && api.dirty) redraw();
+      if (api.visible && api.start) api.start();
+      if (!api.visible && api.stop) api.stop();
+    });
+  }, { rootMargin: '100px' }).observe(el);
+  new MutationObserver(function () { if (api.visible) redraw(); else api.dirty = true; })
+    .observe(el, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (api.resize) api.resize(); });
+  if (!HL_LIVE.running) {
+    HL_LIVE.running = true;
+    requestAnimationFrame(function loop(now) {
+      for (var i = 0; i < HL_LIVE.length; i++) {
+        var a = HL_LIVE[i];
+        if (!a.visible || !a.tick) { a.rl = 0; continue; }
+        var sp = +(a.el.getAttribute('data-speed') || 1) || 1;
+        a.el.hlT += a.rl ? Math.min(250, now - a.rl) * sp : 0; a.rl = now;
+        a.tick(a.el.hlT, now);
+      }
+      requestAnimationFrame(loop);
+    });
+  }
+  return api;
+}
+
+function cssVar(el, n) { return getComputedStyle(el).getPropertyValue(n).trim(); }
+function fgRGB(el) { return cssVar(el, '--hl-rgb') || '16,16,16'; }
+function accRGB(el) { return cssVar(el, '--hl-acc') || '232,17,45'; }
+function acc2RGB(el) { return cssVar(el, '--hl-acc2') || '255,221,0'; }
+function rel(el, mock) { var a = el.getBoundingClientRect(), b = mock.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height, r: a.right - b.left, b: a.bottom - b.top }; }
+function eraseZone(ctx, mock, amt, blur) {
+  // per-line boxes keep the cut-out close to the actual copy
+  ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.filter = 'blur(' + (blur || 30) + 'px)';
+  ctx.fillStyle = 'rgba(0,0,0,' + amt + ')';
+  mock.querySelectorAll('.hl-tag, .hl-title, .hl-lede, .hl-actions').forEach(function (el) { var r = rel(el, mock); if (r.w) ctx.fillRect(r.x - 24, r.y - 16, r.w + 48, r.h + 32); });
+  ctx.restore();
+}
+function hash(x, y, s) { var h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(s, 982451653)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vnoise(x, y, s) {
+  var xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+  fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
+  var a = hash(xi, yi, s), b = hash(xi + 1, yi, s), c = hash(xi, yi + 1, s), d = hash(xi + 1, yi + 1, s);
+  return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+}
+function setupCanvas(layer, mock) {
+  var c = document.createElement('canvas'); layer.appendChild(c);
+  var ctx = c.getContext('2d');
+  return { c: c, ctx: ctx, size: function () { var dpr = Math.min(2, window.devicePixelRatio || 1); var W = mock.clientWidth, H = mock.clientHeight; c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return { W: W, H: H }; } };
+}
+
+var concept = function (mock, layer) {
+  var cv = setupCanvas(layer, mock), ctx = cv.ctx, W, H, CW = 8, CH = 12, cols, rows, heat, fg, ac, ac2, last = 0, t = 0, decay, RAMP = ' .:-=+*#%@';
+  function step() {
+    t++;
+    var base = (rows - 1) * cols;
+    for (var i = 0; i < cols; i++) heat[base + i] = Math.min(1, .5 + .6 * vnoise(i * .12, t * .05, 5)) * (.85 + .15 * Math.random());
+    for (var y = 0; y < rows - 1; y++) for (var x = 0; x < cols; x++) {
+      var from = (y + 1) * cols + x, r = (Math.random() * 3) | 0, dst = y * cols + Math.min(cols - 1, Math.max(0, x - r + 1));
+      heat[dst] = Math.max(0, heat[from] - decay * (.4 + Math.random() * 1.2));
+    }
+  }
+  function build() {
+    var s = cv.size(); W = s.W; H = s.H; cols = Math.ceil(W / CW); rows = Math.ceil(H / CH);
+    fg = fgRGB(mock); ac = accRGB(mock); ac2 = acc2RGB(mock);
+    heat = new Float32Array(cols * rows); decay = 1 / (rows * .52);
+    for (var k = 0; k < rows; k++) step();
+    draw();
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '11px ui-monospace, SFMono-Regular, Consolas, monospace'; ctx.textBaseline = 'top';
+    var B = {};
+    for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+      var h = heat[y * cols + x]; if (h < .07) continue;
+      var ch = RAMP[Math.min(RAMP.length - 1, Math.floor(h * RAMP.length))]; if (ch === ' ') continue;
+      var key = h > .72 ? 'b' : h > .42 ? 'a' : 'f' + Math.min(3, Math.floor(h * 8));
+      (B[key] || (B[key] = [])).push(ch, x * CW, y * CH);
+    }
+    for (var k in B) {
+      var a = B[k];
+      ctx.fillStyle = k === 'b' ? 'rgba(' + ac2 + ',.95)' : k === 'a' ? 'rgba(' + ac + ',.9)' : 'rgba(' + fg + ',' + (.14 + (+k[1]) * .08).toFixed(2) + ')';
+      for (var q = 0; q < a.length; q += 3) ctx.fillText(a[q], a[q + 1], a[q + 2]);
+    }
+    eraseZone(ctx, mock, .92);
+  }
+  function tick(now) { if (now - last < 55) return; last = now; step(); draw(); }
+  return { resize: build, retheme: build, tick: reduce ? null : tick };
+};
+var api = hlMount(document.getElementById('hero-asciifire'), concept);
+})();
+</script>
+</body>
+</html>

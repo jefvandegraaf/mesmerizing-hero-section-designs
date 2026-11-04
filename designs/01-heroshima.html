@@ -1,0 +1,508 @@
+<!doctype html>
+<!--
+  Heroshima hero
+  A pixel bomb falls, explodes at the bottom, and a mushroom cloud rises beside your text.
+
+  Hero designs by Jef van de Graaf, free to use · jefvandegraaf.com/resources/hero-designs/
+
+  How to use: open this file in a browser. Change the colours in --hl-acc and --hl-acc2 (RGB values)
+  and the strength in --i. The headline, supporting line and buttons are plain HTML.
+  Needs no libraries. The animation stops for people who prefer reduced motion.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heroshima hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+body { margin: 0; }
+.hl {
+  --hl-bg: #fbfbfa; --hl-fg: #101010; --hl-muted: #545458; --hl-rgb: 16,16,16;
+  --hl-acc: 232,17,45; --hl-acc2: 255,221,0;
+  --hl-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --hl-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  --hl-jp: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --hl-cw: 1040px; --hl-pad: 48px;
+  --L: max(16px, calc((100% - var(--hl-cw)) / 2));
+  --i: 1;
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--hl-bg); color: var(--hl-fg);
+  font: 400 16px/1.6 var(--hl-sans); text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+.hl[data-theme="dark"] { --hl-bg: #050505; --hl-fg: #f6f6f4; --hl-muted: #a4a4a9; --hl-rgb: 255,255,255; color-scheme: dark; }
+.hl *, .hl *::before, .hl *::after { box-sizing: border-box; }
+.hl-layer { position: absolute; inset: 0; pointer-events: none; }
+.hl-bg { z-index: 0; opacity: min(1, calc(var(--o, .6) * var(--i))); }
+.hl-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hl-inner { position: relative; z-index: 2; padding-inline: calc(var(--L) + var(--hl-pad)); }
+.hl-nav { height: 64px; display: flex; align-items: center; gap: 28px; font-size: 14px; }
+.hl-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; margin-right: auto; white-space: nowrap; }
+.hl-logo { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(140deg, rgba(var(--hl-rgb),.5), rgba(var(--hl-rgb),.15)); }
+.hl-links { display: flex; gap: 26px; color: var(--hl-muted); }
+.hl-navbtn { font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(var(--hl-rgb),.25); white-space: nowrap; }
+.hl-hero { padding-block: 116px 120px; display: grid; gap: 22px; justify-items: start; }
+.hl .hl-tag { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 -6px; font: 500 15px/1.4 var(--hl-sans); color: var(--hl-muted); }
+.hl-tag svg { width: 16px; height: 16px; }
+.hl .hl-title { margin: 0; max-width: 760px; font: 500 clamp(40px, 5vw, 64px)/1.1 var(--hl-sans); letter-spacing: -.02em; color: var(--hl-fg); text-wrap: balance; }
+.hl .hl-lede { margin: 0; max-width: 48ch; font: 400 22px/1.5 var(--hl-sans); color: var(--hl-muted); text-wrap: pretty; }
+.hl-center .hl-hero { justify-items: center; text-align: center; }
+.hl-center .hl-actions { justify-content: center; }
+.hl-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+.hl .hl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 22px; border: 1px solid transparent; border-radius: 10px; font: 600 16px/1 var(--hl-sans); white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, opacity .2s ease; }
+.hl .hl-btn--primary { background: var(--hl-fg); color: var(--hl-bg); }
+.hl .hl-btn--primary:hover { opacity: .86; }
+.hl .hl-btn--secondary { background: var(--hl-bg); color: var(--hl-fg); border-color: rgba(var(--hl-rgb),.3); }
+.hl .hl-btn--secondary:hover { border-color: var(--hl-fg); }
+.hl-btn svg { width: 18px; height: 18px; transition: transform .2s ease; }
+.hl-btn:hover svg { transform: translateX(4px); }
+.hl .hl-btn:focus-visible { outline: 2px solid rgb(var(--hl-acc)); outline-offset: 3px; }
+@media (max-width: 760px) {
+  .hl .hl-title { font-size: min(40px, calc((100vw - 90px) / 8.3)); }
+  .hl .hl-lede { font-size: 16px; }
+  .hl-links { display: none; }
+}
+@media (max-width: 640px) {
+  .hl { --hl-pad: 20px; }
+  .hl-hero { padding-block: 96px 104px; }
+  .hl-actions { flex-direction: column; align-items: stretch; width: min(100%, 300px); }
+  .hl-btn--secondary { order: -1; }
+}
+.hl-bg--heroshima { --o: 1; }
+/* the lede stops about 3/5 across so it never runs into the cloud; balanced lines, no orphans */
+.hl:has(.hl-bg--heroshima) .hl-lede { max-width: min(100%, max(55%, 520px)); text-wrap: balance; }
+@media (prefers-reduced-motion: reduce) {
+  .hl-hz-pool, .hl-hz-core, .hl-caret, .hl-ring, .hl-bg--heat canvas, .hl-r-red .hl-rails .hl-n1, .hl-r-red .hl-rails .hl-b1, .hl-flicker .hl-grain, .hl-flicker .hl-hz-grain, .hl-tm .hl-cur, .hl-crt-roll, .hl-crt-glow, .hl-mq { animation: none; }
+  .hl-ring { opacity: .5; transform: translate(-50%,-50%) scale(6); }
+  .hl-ds-i span::after, .hl-pm path, .hl-pm .hl-pring, .hl-pm text, .hl-pm .hl-pfill, .hl-cg-band { transition: none; }
+}
+/* Centred text sits over the busiest part of most designs: a soft patch of background colour (a scrim) keeps it readable. */
+.hl-center .hl-hero { position: relative; }
+.hl-center .hl-hero::before { content: ""; position: absolute; inset: -48px -96px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--hl-bg) 92%, transparent) 55%, transparent); }
+/* On wider screens the copy sits on the frame's centre line, however many lines the headline takes. */
+@media (min-width: 761px) {
+  body > .hl { display: flex; flex-direction: column; }
+  body > .hl > .hl-inner { flex: 1; display: flex; flex-direction: column; }
+  body > .hl .hl-hero { flex: 1; align-content: center; padding-block: 40px 104px; } /* the 64px header above evens it out */
+}
+/* The supporting line breaks into two even lines on wider screens. */
+@media (min-width: 761px) { .hl .hl-lede { text-wrap: balance; } }
+/* The logo and menu sit a little wider than the headline column. */
+@media (min-width: 761px) { .hl-nav { margin-inline: calc(-1 * min(96px, max(16px, (100vw - var(--hl-cw)) / 2) + var(--hl-pad) - 24px)); } }
+/* Fills the window here. Remove this rule to let the hero take its own height. */
+body > .hl { min-height: 100vh; }
+</style>
+</head>
+<body>
+<section id="hero-heroshima" class="hl" data-theme="dark" style="--hl-acc: 232, 17, 45; --hl-acc2: 255, 221, 0; --i: 0.6;">
+<div class="hl-layer hl-bg hl-bg--heroshima" aria-hidden="true"></div>
+<div class="hl-inner">
+<div class="hl-nav"><span class="hl-brand"><span class="hl-logo"></span>Your Brand</span><span class="hl-links"><span>Product</span><span>Pricing</span><span>Blog</span><span>About</span></span><span class="hl-navbtn">Contact</span></div>
+<div class="hl-hero"><span class="hl-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Dither</span>
+<h1 class="hl-title">Your headline, then the blast</h1>
+<p class="hl-lede">A pixel bomb falls, explodes at the bottom, and a mushroom cloud rises beside your text.</p><div class="hl-actions">
+<a class="hl-btn hl-btn--primary" href="#">Primary CTA</a>
+<a class="hl-btn hl-btn--secondary" href="#">Secondary CTA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></div></div>
+</section>
+<script>
+(function () {
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var HL_LIVE = [];
+function hlMount(el, fn) {
+  var layer = el.querySelector('.hl-bg');
+  el.hlT = performance.now(); // this hero's own clock: runs at data-speed (Slow / Normal / Fast)
+  var api = fn(el, layer) || {};
+  api.el = el; api.visible = false;
+  HL_LIVE.push(api);
+  var w0 = -1, h0 = -1, rq = 0;
+  new ResizeObserver(function () {
+    var w = el.clientWidth, h = el.clientHeight;
+    if (w === w0 && h === h0) return;
+    w0 = w; h0 = h; cancelAnimationFrame(rq);
+    rq = requestAnimationFrame(function () { if (api.resize) api.resize(); });
+  }).observe(el);
+  // theme / accent changes redraw at once when on screen; off screen they wait until the section comes back
+  function redraw() { api.dirty = false; if (api.retheme) api.retheme(); else if (api.resize) api.resize(); }
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      api.visible = e.isIntersecting;
+      if (api.visible && api.dirty) redraw();
+      if (api.visible && api.start) api.start();
+      if (!api.visible && api.stop) api.stop();
+    });
+  }, { rootMargin: '100px' }).observe(el);
+  new MutationObserver(function () { if (api.visible) redraw(); else api.dirty = true; })
+    .observe(el, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (api.resize) api.resize(); });
+  if (!HL_LIVE.running) {
+    HL_LIVE.running = true;
+    requestAnimationFrame(function loop(now) {
+      for (var i = 0; i < HL_LIVE.length; i++) {
+        var a = HL_LIVE[i];
+        if (!a.visible || !a.tick) { a.rl = 0; continue; }
+        var sp = +(a.el.getAttribute('data-speed') || 1) || 1;
+        a.el.hlT += a.rl ? Math.min(250, now - a.rl) * sp : 0; a.rl = now;
+        a.tick(a.el.hlT, now);
+      }
+      requestAnimationFrame(loop);
+    });
+  }
+  return api;
+}
+
+function cssVar(el, n) { return getComputedStyle(el).getPropertyValue(n).trim(); }
+function fgRGB(el) { return cssVar(el, '--hl-rgb') || '16,16,16'; }
+function accRGB(el) { return cssVar(el, '--hl-acc') || '232,17,45'; }
+function acc2RGB(el) { return cssVar(el, '--hl-acc2') || '255,221,0'; }
+function hash(x, y, s) { var h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(s, 982451653)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vnoise(x, y, s) {
+  var xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+  fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
+  var a = hash(xi, yi, s), b = hash(xi + 1, yi, s), c = hash(xi, yi + 1, s), d = hash(xi + 1, yi + 1, s);
+  return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+}
+function fbm(x, y, s) { var v = 0, amp = .5; for (var o = 0; o < 4; o++) { v += amp * vnoise(x, y, s + o); x *= 2; y *= 2; amp *= .5; } return v; }
+var B8 = [[0,32,8,40,2,34,10,42],[48,16,56,24,50,18,58,26],[12,44,4,36,14,46,6,38],[60,28,52,20,62,30,54,22],[3,35,11,43,1,33,9,41],[51,19,59,27,49,17,57,25],[15,47,7,39,13,45,5,37],[63,31,55,23,61,29,53,21]];
+function isDark(el) { return fgRGB(el).indexOf('255') === 0; }
+
+var concept = function (mock, layer) {
+  /* Heroshima (BONUS): a pixel bomb drops, the blast cracks the bottom edge white hot and a dithered
+     mushroom cloud rises beside the copy. Same engine as jefvandegraaf.com/art-of-war/. Accent = fire,
+     second accent = the hot core. Left-aligned: the cloud takes the right side; centred: it rises under the copy. */
+  var hero = mock;
+  var B8 = [[0, 32, 8, 40, 2, 34, 10, 42], [48, 16, 56, 24, 50, 18, 58, 26], [12, 44, 4, 36, 14, 46, 6, 38], [60, 28, 52, 20, 62, 30, 54, 22], [3, 35, 11, 43, 1, 33, 9, 41], [51, 19, 59, 27, 49, 17, 57, 25], [15, 47, 7, 39, 13, 45, 5, 37], [63, 31, 55, 23, 61, 29, 53, 21]];
+  var PAL = [null], SMOKE;
+  function colours() {
+    var a = accRGB(mock).split(",").map(Number), b = acc2RGB(mock).split(",").map(Number), dark = isDark(mock);
+    PAL = [null, dark ? [a[0] * .4 | 0, a[1] * .4 | 0, a[2] * .4 | 0] : [a[0] * .55 | 0, a[1] * .55 | 0, a[2] * .55 | 0], a, b,
+      [b[0] + (255 - b[0]) * .78 | 0, b[1] + (255 - b[1]) * .78 | 0, b[2] + (255 - b[2]) * .78 | 0]];
+    var f = fgRGB(mock).split(",").map(Number);
+    SMOKE = dark ? [52, 50, 48, 255] : [f[0], f[1], f[2], 46];
+  }
+  function hash(x, y) {
+    var h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  }
+  function noise(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function fbm(x, y) {
+    // three octaves, domain rotated between them so the square lattice never shows
+    var s = noise(x, y) * .55;
+    var x2 = x * 1.6 - y * 1.2 + 5.2, y2 = x * 1.2 + y * 1.6 + 1.3;
+    s += noise(x2, y2) * .3;
+    var x3 = x2 * 1.6 - y2 * 1.2 + 9.7, y3 = x2 * 1.2 + y2 * 1.6 + 2.8;
+    return s + noise(x3, y3) * .15;
+  }
+  function sm(a, b, x) { x = (x - a) / (b - a); x = x < 0 ? 0 : x > 1 ? 1 : x; return x * x * (3 - 2 * x); }
+
+  var P = 4;
+  var cv = document.createElement("canvas");
+  cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated";
+  layer.appendChild(cv);
+  var ctx = cv.getContext("2d");
+  var G0 = .08, G1 = .07, x1c = 0, CP, cw, chh, FH, FS, copyBottom = 0, split = false, W, H, w, h, img, thr, mask, gy, cx, S, embers = [], sparks = [], t0 = null, running = false, last = 0, raf = 0;
+
+  function size() {
+    W = hero.clientWidth; H = hero.clientHeight;
+    if (W < 1 || H < 1) return false;
+    P = W < 640 ? 2 : 3; CP = P * 2;
+    w = Math.ceil(W / P); h = Math.ceil(H / P);
+    cw = Math.ceil(W / CP) + 2; chh = Math.ceil(H / CP) + 2; FH = new Float32Array(cw * chh); FS = new Float32Array(cw * chh);
+    cv.width = w; cv.height = h;
+    img = ctx.createImageData(w, h);
+    thr = new Float32Array(w * h);
+    for (var j = 0; j < h; j++) for (var i = 0; i < w; i++) thr[j * w + i] = (B8[j & 7][i & 7] + .5) / 64;
+    // the copy block: everything inside .wrap, in hero coordinates
+    var hr = hero.getBoundingClientRect(), x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    Array.prototype.forEach.call(hero.querySelectorAll(".hl-tag, .hl-title, .hl-lede, .hl-actions"), function (el) {
+      var rg = document.createRange(); rg.selectNodeContents(el); var r = rg.getBoundingClientRect(); if (!r.width) return;
+      x0 = Math.min(x0, r.left - hr.left); x1 = Math.max(x1, r.right - hr.left);
+      y0 = Math.min(y0, r.top - hr.top); y1 = Math.max(y1, r.bottom - hr.top);
+    });
+    gy = H; // the ground is the hero's bottom edge
+    copyBottom = y1; x1c = x1; split = !hero.classList.contains("hl-center") && W >= 760; G0 = split ? .08 : .3; G1 = split ? .07 : .26;
+    if (split) {
+      // copy on the left: the cloud gets the right side, full height
+      // demo copy runs wide: the cloud may tuck under its edge (the copy guard dims it there)
+      cx = x1 + (W - x1) * .45;
+      S = Math.min((gy - 88) / 1.12, (W - x1) * .9); // clears the 64px demo header
+    } else if (x1 < 0) {
+      // no copy in this host (the popup preview): the cloud fills the box
+      cx = W / 2;
+      S = Math.min((gy - 10) / 1.12, W * .56);
+    } else {
+      cx = W / 2;
+      S = Math.min((gy - 88) / 1.12, W * .42); // centred: the cloud rises behind the copy, the guard keeps the text clear
+    } // the cloud's final top lands just under the copy
+    mask = new Float32Array(w * h);
+    var pad = 24, fall = split ? 220 : 90; // phones: the cloud sits right under the copy
+    for (j = 0; j < h; j++) for (i = 0; i < w; i++) {
+      var x = (i + .5) * P, y = (j + .5) * P;
+      var dx = Math.max(x0 - pad - x, 0, x - x1 - pad), dy = Math.max(y0 - pad - y, 0, y - y1 - pad);
+      mask[j * w + i] = sm(0, 1, Math.hypot(dx, dy) / fall);
+    }
+    return true;
+  }
+
+  function spawn(t, g) {
+    var vc = .2 + .56 * g, rx = .12 + .5 * g;
+    var a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random());
+    // most embers lift off the cap; some ride the stem and the burning skirt; one in five is a big one
+    var from = Math.random(), u, v;
+    if (from < .7) { u = Math.cos(a) * r * rx * 1.1; v = vc + Math.sin(a) * r * .22 * g; }
+    else if (from < .85) { u = (Math.random() - .5) * .1; v = Math.random() * vc; }
+    else { u = (Math.random() - .5) * (.2 + 1.6 * g); v = Math.random() * .08; }
+    embers.push({ u: u, v: v, vu: (Math.random() - .5) * .08, vv: .05 + Math.random() * .14, life: 2.5 + Math.random() * 5.5, age: 0, big: Math.random() < .2 });
+  }
+
+  // the drop: a pixel bomb falls onto the blast point, a target glow grows under it, then it detonates
+  var DROP = 1.4;
+  var BOMB = ["ff.....ff", "fff...fff", ".fffffff.", "...bbb...", "..bbbbb..", ".bhbbbbb.", ".bhbbbbb.", ".rrrrrrr.",
+    ".bhbbbbb.", ".bhbbbbb.", ".bhbbbbb.", ".bhbbbbb.", "..hbbbb..", "..bbbbb..", "...bbb...", "....n...."];
+  var BC = { f: [74, 74, 72], b: [128, 128, 124], h: [206, 206, 200], r: accRGB(mock).split(",").map(Number), n: [52, 52, 50] };
+  var GLYPH = { "#": [".1.1.", "11111", ".1.1.", "11111", ".1.1."], 0: ["111", "1.1", "1.1", "1.1", "111"], 1: [".1.", "11.", ".1.", ".1.", "111"],
+    2: ["111", "..1", "111", "1..", "111"], 3: ["111", "..1", ".11", "..1", "111"], 4: ["1.1", "1.1", "111", "..1", "..1"],
+    5: ["111", "1..", "111", "..1", "111"], 6: ["111", "1..", "111", "1.1", "111"], 7: ["111", "..1", "..1", ".1.", ".1."],
+    8: ["111", "1.1", "111", "1.1", "111"], 9: ["111", "1.1", "111", "..1", "111"] };
+  var LABEL = hero.getAttribute("data-aow-num") ? "#" + hero.getAttribute("data-aow-num") : "";
+  function drop(t) {
+    var d = img.data, p = t / DROP, z = 4, bw = 9 * z, bh = BOMB.length * z;
+    new Uint32Array(d.buffer).fill(0);
+    var gyc = h - 1, x0 = Math.round(cx / P - bw / 2) + Math.round(Math.sin(t * 9) * .6);
+    var y0 = -bh; // phones: fall from under the copy, never behind it
+    var yTop = y0 + (h - bh - y0) * p * p; // accelerates; the nose touches the ground at p = 1
+    // target glow on the ground, growing as it falls
+    var gw = (.05 + .25 * p * p) * S / P;
+    for (var j = gyc - 5; j <= gyc; j++) for (var i = Math.max(0, Math.floor(cx / P - gw * 2)); i < Math.min(w, cx / P + gw * 2); i++) {
+      var a = Math.exp(-Math.pow((i - cx / P) / gw, 2)) * (.15 + .4 * p * p) * (1 - (gyc - j) / 6);
+      var kk = j * w + i, f = a * 4, lv = f | 0; if (f - lv > thr[kk]) lv++;
+      if (lv > 0) { var c = PAL[Math.min(lv, 3)], o = kk * 4; d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255; }
+    }
+    // speed streaks above the bomb
+    for (var s2 = 0; s2 < 3; s2++) {
+      var sx = x0 + 2 * z + s2 * 2 * z, len = Math.round(bh * 1.4 * p);
+      for (var q = 1; q <= len; q++) {
+        var sj = Math.floor(yTop) - q; if (sj < 0 || sj >= h || sx < 0 || sx >= w) continue;
+        var sk = sj * w + sx; if ((1 - q / len) * .6 > thr[sk]) { var so = sk * 4; d[so] = 90; d[so + 1] = 90; d[so + 2] = 86; d[so + 3] = 255; }
+      }
+    }
+    for (var r = 0; r < BOMB.length; r++) for (var col = 0; col < 9; col++) {
+      var ch = BOMB[r][col]; if (ch === ".") continue;
+      var cc = BC[ch];
+      for (var zy = 0; zy < z; zy++) for (var zx = 0; zx < z; zx++) {
+        var bj = Math.floor(yTop) + r * z + zy, bi = x0 + col * z + zx;
+        if (bj < 0 || bj >= h || bi < 0 || bi >= w) continue;
+        var bo = (bj * w + bi) * 4; d[bo] = cc[0]; d[bo + 1] = cc[1]; d[bo + 2] = cc[2]; d[bo + 3] = 255;
+      }
+    }
+    // the chapter number on the body, under the red band
+    if (LABEL) {
+      var fz = 2, lw = -fz; for (var lg = 0; lg < LABEL.length; lg++) lw += ((GLYPH[LABEL[lg]] || ["..."])[0].length + 1) * fz;
+      var lx0 = 0, lx = x0 + Math.round((bw - lw) / 2), ly = Math.floor(yTop) + 8 * z + Math.round((6 * z - 5 * fz) / 2);
+      for (var g = 0; g < LABEL.length; g++) {
+        var gl = GLYPH[LABEL[g]]; if (!gl) continue;
+        for (var gr = 0; gr < 5; gr++) for (var gc = 0; gc < gl[0].length; gc++) {
+          if (gl[gr][gc] !== "1") continue;
+          for (var fy = 0; fy < fz; fy++) for (var fx = 0; fx < fz; fx++) {
+            var pj = ly + gr * fz + fy, pi = lx + (lx0 + gc) * fz + fx;
+            if (pj < 0 || pj >= h || pi < 0 || pi >= w) continue;
+            var po = (pj * w + pi) * 4; d[po] = 24; d[po + 1] = 24; d[po + 2] = 22; d[po + 3] = 255;
+          }
+        }
+        lx0 += gl[0].length + 1;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  function frame(t, dt) {
+    if (t < DROP) return drop(t);
+    t -= DROP;
+    var g = 1 - Math.exp(-t / 2.4);
+    var vc = .2 + .56 * g, rx = .12 + .5 * g, ry = .08 + .24 * g;
+    var rxb = .1 + 1.05 * g, ryb = .04 + .08 * g;
+    var k = .74 + .26 * Math.exp(-t / 5) + .04 * Math.sin(t * 7.3) * Math.sin(t * 3.1);
+    var rw = t * .42, swA = Math.exp(-t / 2.6), swW = .0006 + t * .0005;
+    var flash = t < 1.1 ? Math.pow(1 - t / 1.1, 3) : 0;
+    var wil = sm(.8, 2.2, t) * (1 - sm(4, 8, t)), wilR = .12 + .25 * g, wilV = vc * .62;
+    var d = img.data, inv = 1 / S, topFade = .55 * H;
+    new Uint32Array(d.buffer).fill(0); FH.fill(0); FS.fill(0);
+    // only visit cells that can light up: rows near the cloud, columns inside the widest effect on that row
+    // 1) the shape on the coarse grid (grid points every CP px)
+    for (var j = 0; j < chh; j++) {
+      var y = j * CP, v = (gy - y) * inv;
+      var i0 = 0, i1 = cw;
+      if (!flash) {
+        if (v > vc + 1.85 || v < -.07) continue; // the glow reaches dv 1.79 (exp > .01)
+        var um = 1.9;
+        if (v < ryb * 1.6) um = Math.max(um, rxb * 1.3);
+        if (v < .02) um = Math.max(um, rxb * 2.4);
+        if (v < .15 && swA > .02) um = Math.max(um, rw + .2);
+        i0 = Math.max(0, Math.floor((cx - um * S) / CP) - 1); i1 = Math.min(cw, Math.ceil((cx + um * S) / CP) + 2);
+      }
+      for (var i = i0; i < i1; i++) {
+        var kk = j * cw + i, x = i * CP, u = (x - cx) * inv;
+        var heat = 0, smoke = 0;
+        // sky glow around the cap
+        // the glow is broken up by drifting noise so its outline reads as smoke, not an oval
+        var sk = Math.exp(-(u * u / .75 + (v - vc) * (v - vc) / .7)) * .3 * k;
+        if (sk > .01) { var nz = fbm(u * 2.2 + t * .03 + 11.3, v * 2.2 - t * .06 + 5.1); sk = Math.max(0, sk * nz * nz * 2.6 - .03); }
+        else sk = 0;
+        heat = sk * sm(0, topFade, y); // eases out well before the top of the hero
+        if (v < 0) {
+          // ground: a lit strip under the blast
+          if (v > -.07) heat = Math.max(heat * .4, Math.exp(-u * u / (rxb * rxb * 1.6)) * .34 * (1 + v / .07) * k);
+        } else {
+          // cap
+          var dx = u / rx, dy = (v - vc) / ry, r2 = dx * dx + dy * dy;
+          if (r2 < 2.4) {
+            var sg = dx < 0 ? -1 : 1;
+            var n = fbm(dx * 2.2 + sg * t * .14 + 3.7, dy * 2.6 - t * .26 + 7.1);
+            var cd = 1 - r2 + (n - .5) * 1.0;
+            var cap = sm(0, .25, cd);
+            var core = Math.exp(-(dx * dx * 1.1 + (dy + .35) * (dy + .35) * 2.2));
+            heat = Math.max(heat, cap * (.42 + .78 * core) * k);
+            smoke = Math.max(smoke, (sm(-.4, 0, cd) - cap) * .9);
+          }
+          // stem
+          if (v < vc) {
+            var q = v / vc, sw = (.035 + .06 * g) * (1 + 1.6 * q * q * q);
+            if (Math.abs(u) < sw * 2.2) {
+              var ns = fbm(u * 14 + 1.9, v * 5 - t * .6);
+              var sd = 1 - Math.abs(u) / sw + (ns - .5) * .9;
+              var st = sm(0, .3, sd);
+              heat = Math.max(heat, st * (.4 + .4 * q) * k);
+              smoke = Math.max(smoke, (sm(-.5, 0, sd) - st) * .6);
+            }
+          }
+          // ground skirt of dust and fire
+          if (v < ryb * 1.6 && Math.abs(u) < rxb * 1.3) {
+            var nb = fbm(u * 5 - (u < 0 ? -1 : 1) * t * .1 + 4.4, v * 9 + 2.2);
+            var bd = 1 - (u / rxb) * (u / rxb) - (v / ryb) * (v / ryb) + (nb - .5) * .9;
+            var base = sm(0, .3, bd);
+            heat = Math.max(heat, base * (.28 + .42 * Math.exp(-(u / rxb) * (u / rxb) * 3)) * k);
+            smoke = Math.max(smoke, base * .8, sm(-.4, 0, bd) * .5);
+          }
+          // condensation ring around the stem
+          if (wil > 0) {
+            var wd = Math.abs(Math.hypot(u / wilR, (v - wilV) / (wilR * .22)) - 1);
+            if (wd < .2) smoke = Math.max(smoke, (1 - wd / .2) * wil * (.6 + .4 * noise(u * 30, t)));
+          }
+        }
+        // shockwave along the ground
+        if (swA > .02 && v > -.03 && v < .15) {
+          var sd2 = Math.hypot(u, v * 3.4) - rw;
+          heat = Math.max(heat, Math.exp(-(sd2 * sd2) / swW) * swA * .95 * (1 - sm(.04, .15, v)));
+        }
+        if (flash > 0) heat += flash * 1.5 * Math.exp(-(u * u + (v - .15) * (v - .15)) / (.2 + t * .8));
+        FH[kk] = heat; FS[kk] = smoke;
+      }
+    }
+    // 2) dither every fine cell from the bilinear field
+    for (j = 0; j < h; j++) {
+      var gyf = ((j + .5) * P) / CP, jj = gyf | 0, fy = gyf - jj, r0 = jj * cw, r1 = r0 + cw;
+      for (i = 0; i < w; i++) {
+        var gxf = ((i + .5) * P) / CP, ii = gxf | 0, fx = gxf - ii;
+        var a00 = r0 + ii, a10 = r1 + ii;
+        var ht = (FH[a00] * (1 - fx) + FH[a00 + 1] * fx) * (1 - fy) + (FH[a10] * (1 - fx) + FH[a10 + 1] * fx) * fy;
+        var sm2 = (FS[a00] * (1 - fx) + FS[a00 + 1] * fx) * (1 - fy) + (FS[a10] * (1 - fx) + FS[a10 + 1] * fx) * fy;
+        if (ht < .015 && sm2 < .06) continue;
+        var kf = j * w + i, m = mask[kf];
+        // keep the copy readable: fade, not a cut-off, so the bright flash never draws a box
+        ht = Math.min(ht * (G0 + (1 - G0) * m * m), G1 + (1 - G1) * m);
+        sm2 *= .25 + .75 * m;
+        var f = (ht > 1 ? 1 : ht) * 4, lv = f | 0, o = kf * 4;
+        if (f - lv > thr[kf]) lv++;
+        if (lv > 4) lv = 4;
+        if (lv > 0) { var c = PAL[lv]; d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255; }
+        else if (sm2 * .55 > thr[kf]) { d[o] = SMOKE[0]; d[o + 1] = SMOKE[1]; d[o + 2] = SMOKE[2]; d[o + 3] = SMOKE[3]; }
+      }
+    }
+    // 3) impact: the bottom edge cracks open from the blast point, white hot, racing outward both ways,
+    // then cools to the underglow (yellow under the cloud, red toward the ends)
+    var front = t * 1900, span = Math.max(cx, W - cx), cool = Math.exp(-t / 1.6), rows = Math.ceil(46 / P);
+    for (j = h - rows; j < h; j++) {
+      var hp = (h - 1 - j) * P; // px above the edge
+      for (i = 0; i < w; i++) {
+        var xx = (i + .5) * P, dd = Math.abs(xx - cx);
+        if (dd > front) continue;
+        var along = dd / span; // 0 at the blast, 1 at the far end
+        var lineH = (.62 + .43 * cool) * (1 - .45 * along) + .5 * Math.exp(-Math.pow((front - dd) / 40, 2)) * cool; // hot front edge
+        var lh = lineH * (hp < P * 1.5 ? 1 : Math.exp(-(hp - P) / (10 + 14 * cool)));
+        var kf = j * w + i;
+        if (hp > 6) lh *= .35 + .65 * mask[kf];
+        var f = (lh > 1 ? 1 : lh) * 4, lv = f | 0, o = kf * 4;
+        if (f - lv > thr[kf]) lv++;
+        if (lv > 4) lv = 4;
+        if (lv > 0 && (d[o + 3] === 0 || lv >= 2)) { var c = PAL[lv]; d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255; }
+      }
+    }
+    // sparks thrown up where the edge cracks open
+    if (!reduce && front < span + 200) for (var sp = 0; sp < 2; sp++) {
+      var sd = Math.random() < .5 ? -1 : 1;
+      sparks.push({ x: cx + sd * front * (.85 + Math.random() * .15), y: H - 2, vx: sd * (60 + Math.random() * 160), vy: -(120 + Math.random() * 260), life: .5 + Math.random() * .7, age: 0 });
+    }
+    for (var q2 = sparks.length - 1; q2 >= 0; q2--) {
+      var sk2 = sparks[q2]; sk2.age += dt; sk2.x += sk2.vx * dt; sk2.y += sk2.vy * dt; sk2.vy += 520 * dt;
+      if (sk2.age > sk2.life || sk2.y > H) { sparks.splice(q2, 1); continue; }
+      var si = (sk2.x / P) | 0, sj = (sk2.y / P) | 0; if (si < 0 || si >= w || sj < 0 || sj >= h) continue;
+      var sc = PAL[sk2.age / sk2.life < .3 ? 4 : sk2.age / sk2.life < .65 ? 3 : 2], so2 = (sj * w + si) * 4;
+      d[so2] = sc[0]; d[so2 + 1] = sc[1]; d[so2 + 2] = sc[2]; d[so2 + 3] = 255;
+    }
+
+    // embers
+    if (!reduce) {
+      // a storm of embers: they rise past the cloud into the dark, swirl, and cool yellow > red > ember
+      var want = t < 6 ? 220 : 130;
+      while (embers.length < want) spawn(t, g);
+      for (var e = embers.length - 1; e >= 0; e--) {
+        var p = embers[e];
+        p.age += dt; p.u += p.vu * dt; p.v += p.vv * dt;
+        p.vu += ((Math.random() - .5) * .06 + Math.sin(p.v * 9 + t * 1.3) * .02) * dt;
+        if (p.age > p.life) { embers.splice(e, 1); continue; }
+        var ei = Math.round((cx + p.u * S) / P), ej = Math.round((gy - p.v * S) / P);
+        if (ei < 0 || ej < 0 || ei >= w - 1 || ej >= h - 1) continue;
+        var ek = ej * w + ei, mk = mask[ek];
+        var life = p.age / p.life, yy = ej * P;
+        // fade out toward the top of the hero and near the copy, by thinning (dithered), never a hard stop
+        var keep = Math.min(1, yy / (H * .3)) * (mk > .5 ? 1 : mk * 2) * (life > .8 ? (1 - life) * 5 : 1);
+        if (keep < thr[ek]) continue;
+        var col = PAL[life < .3 ? 3 : life < .7 ? 2 : 1], cells = p.big ? [0, 1, w, w + 1] : [0];
+        for (var c2 = 0; c2 < cells.length; c2++) { var eo = (ek + cells[c2]) * 4; d[eo] = col[0]; d[eo + 1] = col[1]; d[eo + 2] = col[2]; d[eo + 3] = 255; }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+
+  var clock = null, lastTick = 0, shown = 0;
+  function draw() { if (img) frame(reduce ? 14 : shown, 0); }
+  colours();
+  return {
+    resize: function () { if (size()) draw(); },
+    retheme: function () { colours(); draw(); },
+    tick: reduce ? null : function (now) {
+      if (!img) return;
+      if (clock === null) clock = now;
+      if (now - lastTick < 50) return;
+      var dt = lastTick ? Math.min(.1, (now - lastTick) / 1000) : 0;
+      lastTick = now; shown = (now - clock) / 1000;
+      frame(shown, dt);
+    },
+    replay: function () { clock = null; lastTick = 0; shown = 0; embers.length = 0; sparks.length = 0; draw(); }
+  };
+};
+var api = hlMount(document.getElementById('hero-heroshima'), concept);
+})();
+</script>
+</body>
+</html>
